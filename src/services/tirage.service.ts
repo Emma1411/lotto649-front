@@ -32,6 +32,26 @@ const TirageService = {
     return response;
   },
 
+  getDetails: async (date: string) => {
+    return await APIRequest({
+        url: `/tirages/${date}/details`,
+        requestMethod: "GET",
+    });
+},
+
+  filterByDate: async (
+    start_date: string,
+    end_date: string,
+    page = 1,
+    per_page = 20
+  ) => {
+    return await APIRequest({
+      url: "/tirages/filter",
+      requestMethod: "GET",
+      params: { start_date, end_date, page, per_page },
+    });
+  },
+
   //  Récupérer un tirage précis par son ID
   read: async (id: number) => {
     const response = await APIRequest({

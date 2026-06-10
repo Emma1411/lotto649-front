@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import {
   RiFlaskLine,
   RiBarChartLine,
@@ -9,7 +8,6 @@ import {
   RiNumbersLine,
   RiFireLine,
 } from "react-icons/ri";
-
 import BacktestingService from "../../services/backtesting.service";
 import BallDisplay from "../../components/BallDisplay";
 
@@ -24,12 +22,19 @@ const Backtesting: React.FC = () => {
       BacktestingService.list(1, 20),
     ])
       .then(([statsRes, listRes]: any[]) => {
+        console.log("STATS RES COMPLET :", statsRes);
+        console.log("STATS DATA :", statsRes.data);
+        console.log("LIST RES COMPLET :", listRes);
+        console.log("LIST DATA :", listRes.data);
         setStats(statsRes.data);
         setResultats(listRes.data || []);
       })
+      .catch((err) => {
+        console.error("ERREUR API :", err);
+      })
       .finally(() => setLoading(false));
   }, []);
-
+  
   const getColor = (n: number) => {
     if (n >= 4) return "#22C55E";
     if (n >= 3) return "#38BDF8";
@@ -42,7 +47,6 @@ const Backtesting: React.FC = () => {
       className="flex flex-col gap-10 px-2 md:px-4"
       style={{ paddingTop: "3rem" }}
     >
-      {/* HEADER (copié Dashboard style) */}
 
       <div className="flex items-center gap-4">
         <div
@@ -164,7 +168,6 @@ const Backtesting: React.FC = () => {
         </div>
       )}
 
-      {/* INTERPRETATION (same style block Dashboard) */}
       <div
         className="rounded-3xl p-8"
         style={{
@@ -180,25 +183,41 @@ const Backtesting: React.FC = () => {
             <RiFireLine style={{ color: "#38BDF8", fontSize: 22 }} />
             Analyse scientifique
           </p>
-
           <p className="text-sm mt-2" style={{ color: "#94A3B8" }}>
             Comparaison modèle vs hasard pur
           </p>
         </div>
 
-        <p style={{ color: "#94A3B8", fontSize: 15, lineHeight: 1.7 }}>
-          Hasard pur ≈{" "}
-          <span style={{ color: "white" }}>0.735</span> bons numéros.
-          Modèle ≈{" "}
-          <span style={{ color: "white" }}>1.125</span> →
-          <span style={{ color: "#22C55E", fontWeight: 600 }}>
-            {" "}
-            +53%
-          </span>
-        </p>
+        {stats && stats.moyenne_bons_numeros != null ? (
+          <p style={{ color: "#94A3B8", fontSize: 15, lineHeight: 1.7 }}>
+            Hasard pur ≈{" "}
+            <span style={{ color: "white" }}>
+              {(6 * 6 / 49).toFixed(3)}
+            </span>{" "}
+            bons numéros. Modèle ≈{" "}
+            <span style={{ color: "white" }}>
+              {stats.moyenne_bons_numeros.toFixed(3)}
+            </span>{" "}
+            →
+            <span
+              style={{
+                color: stats.moyenne_bons_numeros > (6 * 6 / 49)
+                  ? "#22C55E"
+                  : "#EF4444",
+                fontWeight: 600,
+              }}
+            >
+              {" "}
+              +{(((stats.moyenne_bons_numeros / (6 * 6 / 49)) - 1) * 100).toFixed(1)}%
+            </span>
+          </p>
+        ) : (
+          <p style={{ color: "#64748B", fontSize: 14 }}>
+            Non disponible
+          </p>
+        )}
       </div>
 
-      {/* LIST (same card system Dashboard style) */}
       <div className="flex flex-col gap-6">
         <h2 className="text-white font-bold text-xl flex items-center gap-3">
           <RiFunctionLine style={{ color: "#38BDF8" }} />
@@ -249,7 +268,6 @@ const Backtesting: React.FC = () => {
                 </div>
               </div>
 
-              {/* CENTER */}
               <div className="flex gap-2 flex-wrap">
                 {r.numeros_predits?.map((n: number, j: number) => (
                   <BallDisplay
@@ -265,7 +283,6 @@ const Backtesting: React.FC = () => {
                 ))}
               </div>
 
-              {/* RIGHT */}
               <div
                 style={{
                   color:

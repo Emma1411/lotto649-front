@@ -69,7 +69,6 @@ const Navbar: React.FC = () => {
           height: "72px",
         }}
       >
-        {/* Logo */}
         <div
           style={{
             display: "flex",

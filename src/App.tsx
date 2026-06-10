@@ -9,6 +9,7 @@ import Predictions   from "./pages/predictions/Predictions";
 import Tickets       from "./pages/tickets/Tickets";
 import TicketAdd     from "./pages/tickets/TicketAdd";
 import Backtesting   from "./pages/backtesting/Backtesting";
+import TirageDetail from "./pages/historique/TirageDetail";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route element={<DefaultLayout />}>
             <Route path="/"            element={<Dashboard />} />
             <Route path="/historique"  element={<Historique />} />
+            <Route path="/historique/:date" element={<TirageDetail />} />
             <Route path="/predictions" element={<Predictions />} />
             <Route path="/tickets"     element={<Tickets />} />
             <Route path="/tickets/add" element={<TicketAdd />} />

@@ -41,6 +41,7 @@ const BacktestingService = {
 
     return response;
   },
+
 };
 
 export default BacktestingService;
