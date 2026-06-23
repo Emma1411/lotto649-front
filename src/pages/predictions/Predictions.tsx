@@ -14,9 +14,15 @@ import { fetchPrediction } from "../../thunks/prediction.thunk";
 import BallDisplay from "../../components/BallDisplay";
 import { STRATEGIES } from "../../utils/constants";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { RiSaveLine } from "react-icons/ri";
 
 const Predictions: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [selected, setSelected] = useState<number[]>([]);
+  const selectAll = () => setSelected(prediction?.grilles.map((_: any, i: number) => i) ?? []);
+  const deselectAll = () => setSelected([]);
 
   const { prediction, loading } =
     useAppSelector((s) => s.prediction);
@@ -28,6 +34,7 @@ const Predictions: React.FC = () => {
     useState("equilibre");
 
   const handleGenerer = async () => {
+    setSelected([]);
     try {
       await dispatch(
         fetchPrediction(nbTickets, strategie)
@@ -39,6 +46,25 @@ const Predictions: React.FC = () => {
         "Erreur lors de la génération"
       );
     }
+  };
+
+  const toggleSelect = (index: number) => {
+    setSelected((prev) =>
+      prev.includes(index)
+        ? prev.filter((i) => i !== index)
+        : [...prev, index]
+    );
+  };
+
+  const handleEnregistrer = () => {
+    if (!prediction || selected.length === 0) return;
+    const grilles_choisies = selected.map((i) => prediction.grilles[i]);
+    navigate("/tickets/add", {
+      state: {
+        grilles_predites: grilles_choisies,
+        strategie,
+      }
+    });
   };
 
   return (
@@ -479,190 +505,246 @@ const Predictions: React.FC = () => {
         </div>
       )}
 
-      {/* RESULTS */}
-      {!loading &&
-        prediction && (
-          <div className="space-y-6" >
-            {/* Header */}
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <p
-                className="
-                  text-white font-bold text-xl
-                "
-              >
-                {
-                  prediction.nb_tickets
-                }{" "}
-                grille
-                {prediction.nb_tickets >
-                  1
-                  ? "s"
-                  : ""}{" "}
-                générée
-                {prediction.nb_tickets >
-                  1
-                  ? "s"
-                  : ""}
-              </p>
+      {!loading && prediction && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <p
+              className="font-bold text-xl"
+              style={{ color: "#CBD5E1" }}
+            >
+              {prediction.nb_tickets} grille
+              {prediction.nb_tickets > 1 ? "s" : ""} générée
+              {prediction.nb_tickets > 1 ? "s" : ""}
+            </p>
 
-              <div
-                className="
-                  px-5 py-3 rounded-2xl
-                "
+            <div
+              className="px-5 py-3 rounded-2xl"
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <span style={{ color: "#64748B" }}>
+                Coût total —{" "}
+              </span>
+
+              <span
+                className="font-bold"
+                style={{ color: "#0F172A" }}
+              >
+                {prediction.cout_total?.toFixed(2)} $
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <span
+              className="text-sm"
+              style={{ color: "#64748B" }}
+            >
+              {selected.length} grille
+              {selected.length > 1 ? "s" : ""} sélectionnée
+              {selected.length > 1 ? "s" : ""}
+            </span>
+
+            <button
+              onClick={selectAll}
+              className="text-xs px-3 py-1.5 rounded-lg transition-all duration-300"
+              style={{
+                background:
+                  "rgba(56,189,248,0.08)",
+                border:
+                  "1px solid rgba(56,189,248,0.20)",
+                color: "#38BDF8",
+                borderRadius: "4px",
+                padding: "2px"
+              }}
+            >
+              Tout sélectionner
+            </button>
+
+            {selected.length > 0 && (
+              <button
+                onClick={deselectAll}
+                className="text-xs px-3 py-1.5 rounded-lg transition-all duration-300"
                 style={{
                   background:
-                    "rgba(255,255,255,0.03)",
-
+                    "rgba(255,255,255,0.04)",
                   border:
-                    "1px solid rgba(255,255,255,0.06)",
+                    "1px solid rgba(255,255,255,0.08)",
+                  color: "#64748B",
+
                 }}
               >
-                <span
-                  style={{
-                    color: "#64748B",
-                  }}
-                >
-                  Coût total —{" "}
-                </span>
+                Tout désélectionner
+              </button>
+            )}
+          </div>
 
-                <span
-                  className="
-                    text-white font-bold
-                  "
-                >
-                  {prediction.cout_total?.toFixed(
-                    2
-                  )}{" "}
-                  $
-                </span>
-              </div>
-            </div>
+          <div className="grid lg:grid-cols-2 gap-6" style={{ marginTop: "4px", marginBottom: "4px" }}>
+            {prediction.grilles.map(
+              (grille: any, i: number) => {
+                const isSelected =
+                  selected.includes(i);
 
-            {/* Cards */}
-            <div className="grid lg:grid-cols-2 gap-6">
-              {prediction.grilles.map(
-                (
-                  grille: any,
-                  i: number
-                ) => (
+                return (
                   <div
                     key={i}
+                    onClick={() =>
+                      toggleSelect(i)
+                    }
                     className="
-                      group
-                      relative overflow-hidden
-                      rounded-3xl
-                      p-6
-                      transition-all duration-500
-                      hover:scale-[1.02]
-                    "
+                group
+                relative overflow-hidden
+                rounded-3xl
+                p-6
+                transition-all duration-500
+                hover:scale-[1.02]
+                cursor-pointer
+              "
                     style={{
                       background:
                         "rgba(15,23,42,0.72)",
 
-                      border:
-                        "1px solid rgba(148,163,184,0.10)",
+                      border: isSelected
+                        ? "1px solid rgba(56,189,248,0.35)"
+                        : "1px solid rgba(148,163,184,0.10)",
 
                       backdropFilter:
                         "blur(16px)",
 
-                      boxShadow:
-                        "0 10px 40px rgba(0,0,0,0.20)",
+                      boxShadow: isSelected
+                        ? "0 0 30px rgba(56,189,248,0.18)"
+                        : "0 10px 40px rgba(0,0,0,0.20)",
                     }}
                   >
-                    {/* Hover */}
                     <div
                       className="
-                        absolute inset-0
-                        opacity-0
-                        group-hover:opacity-100
-                        transition-all duration-500
-                      "
+                  absolute inset-0
+                  opacity-0
+                  group-hover:opacity-100
+                  transition-all duration-500
+                "
                       style={{
                         background:
                           "linear-gradient(135deg, rgba(56,189,248,0.06), rgba(99,102,241,0.06))",
                       }}
                     />
 
-                    {/* Bubble */}
                     <div
                       className="
-                        absolute
-                        w-[400px]
-                        h-[400px]
-                        rounded-full
-                        bg-blue-500/10
-                        -left-24
-                        top-52
-                        rotate-[-35deg]
-                        transition-all duration-700
-                        group-hover:top-0
-                      "
+                  absolute
+                  rounded-full
+                  bg-blue-500/10
+                  -left-24
+                  top-52
+                  rotate-[-35deg]
+                  transition-all duration-700
+                  group-hover:top-0
+                "
                     />
 
                     <div className="relative z-10">
-                      {/* Top */}
                       <div
                         className="
-                          flex items-center
-                          justify-between mb-6
-                        "
+                    flex items-center
+                    justify-between
+                    mb-6
+                  "
+                        style={{ padding: "7px" }}
                       >
                         <div>
                           <p
                             className="
-                              text-white
-                              font-bold text-lg
-                            "
+                        text-white
+                        font-bold text-lg
+                      "
                           >
                             Grille{" "}
                             {String(
                               grille.ticket
-                            ).padStart(
-                              2,
-                              "0"
-                            )}
+                            ).padStart(2, "0")}
                           </p>
 
                           <p
                             className="
-                              text-xs mt-1
-                            "
+                        text-xs mt-1
+                      "
                             style={{
-                              color:
-                                "#64748B",
+                              color: "#64748B",
                             }}
                           >
                             Générée par IA
                           </p>
                         </div>
 
-                        <div
-                          className="
-                            px-3 py-2 rounded-xl
-                          "
-                          style={{
-                            background:
-                              "rgba(255,255,255,0.04)",
-
-                            border:
-                              "1px solid rgba(255,255,255,0.06)",
-                          }}
-                        >
-                          <span
+                        <div className="flex items-center gap-3">
+                          <div
                             className="
-                              text-sm font-semibold
-                            "
+                        px-3 py-2 rounded-xl
+                      "
                             style={{
-                              color:
-                                "#7DD3FC",
+                              background:
+                                "rgba(255,255,255,0.04)",
+
+                              border:
+                                "1px solid rgba(255,255,255,0.06)",
                             }}
                           >
-                            3.00 $
-                          </span>
+                            <span
+                              className="
+                          text-sm font-semibold
+                        "
+                              style={{
+                                color: "#7DD3FC",
+                              }}
+                            >
+                              3.00 $
+                            </span>
+                          </div>
+
+                          <div
+                            className="
+                        w-7 h-7 rounded-lg
+                        flex items-center justify-center
+                        transition-all duration-300
+                      "
+                            style={{
+                              background:
+                                isSelected
+                                  ? "#38BDF8"
+                                  : "rgba(255,255,255,0.06)",
+
+                              border: isSelected
+                                ? "1px solid #38BDF8"
+                                : "1px solid rgba(255,255,255,0.12)",
+
+                              boxShadow:
+                                isSelected
+                                  ? "0 0 15px rgba(56,189,248,0.35)"
+                                  : "none",
+                            }}
+                          >
+                            {isSelected && (
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 14 14"
+                                fill="none"
+                              >
+                                <path
+                                  d="M2.5 7L5.5 10L11.5 4"
+                                  stroke="white"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            )}
+                          </div>
                         </div>
                       </div>
 
-                      {/* Balls */}
                       <div className="flex gap-4 flex-wrap">
                         {grille.numeros.map(
                           (
@@ -672,9 +754,8 @@ const Predictions: React.FC = () => {
                             <div
                               key={j}
                               className="
-                                transition-all duration-300
-                                hover:scale-110
-                              "
+                          transition-all duration-300
+                        "
                             >
                               <BallDisplay
                                 numero={n}
@@ -687,11 +768,67 @@ const Predictions: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                )
-              )}
-            </div>
+                );
+              }
+            )}
           </div>
-        )}
+
+          {selected.length > 0 && (
+            <button
+              onClick={handleEnregistrer}
+              className="
+          group
+          relative overflow-hidden
+          w-full
+          py-4
+          rounded-3xl
+          transition-all duration-300
+          hover:scale-[1.01]
+        "
+              style={{
+                background:
+                  "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
+
+                color: "white",
+
+                boxShadow:
+                  "0 0 35px rgba(59,130,246,0.30)",
+                borderRadius: "4px",
+                padding: "2px"
+              }}
+            >
+              <div
+                className="
+            absolute inset-0
+            opacity-0
+            group-hover:opacity-100
+            transition-all duration-500
+          "
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(255,255,255,0.08), transparent)",
+                }}
+              />
+
+              <div
+                className="
+            relative z-10
+            flex items-center justify-center
+            gap-3
+            font-semibold
+          "
+              >
+                <RiSaveLine size={20} />
+
+                Enregistrer et jouer  {selected.length} grille
+                {selected.length > 1 ? "s" : ""} sélectionnée
+                {selected.length > 1 ? "s" : ""} —{" "}
+                {(selected.length * 3).toFixed(2)} $
+              </div>
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

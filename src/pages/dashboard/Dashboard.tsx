@@ -157,7 +157,6 @@ const Dashboard: React.FC = () => {
         </p>
       </div>
 
-      {/* STATS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
         <StatCard
           icon={<RiDatabaseLine />}
@@ -189,11 +188,10 @@ const Dashboard: React.FC = () => {
         <StatCard
           icon={<RiArrowUpLine />}
           label="Alpha vs hasard"
-          value="+53%"
+          value="+1.2%"
         />
       </div>
 
-      {/* DERNIER TIRAGE */}
       {loading ? (
         <div className="flex justify-center">
           <div

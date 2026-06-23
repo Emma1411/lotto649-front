@@ -135,7 +135,7 @@ const TirageDetail: React.FC = () => {
                 Retour à l'historique
             </button>
 
-            {/* HEADER */}
+          
             <div className="flex items-center gap-4">
                 <div
                     className="w-14 h-14 rounded-2xl flex items-center justify-center"
