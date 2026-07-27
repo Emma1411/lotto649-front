@@ -158,24 +158,27 @@ const TicketsParDate: React.FC = () => {
                 Retour aux tickets
             </button>
 
-            {/* HEADER */}
+
             <div className="flex items-center gap-4">
                 <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                    className="rounded-2xl flex items-center justify-center "
                     style={{
+                        width: 40,
+                        height: 40,
                         background: "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
                         boxShadow: "0 0 30px rgba(59,130,246,0.35)",
                     }}
                 >
-                    <RiTicket2Line size={26} color="white" />
+                    <RiTicket2Line size={20} color="white" />
                 </div>
                 <div>
                     <h1
-                        className="text-4xl font-black tracking-tight"
+                        className="font-black tracking-tight"
                         style={{
                             background: "linear-gradient(135deg,#7DD3FC,#38BDF8,#6366F1)",
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
+                            fontSize: "clamp(1.7rem, 5vw, 2.25rem)",
                         }}
                     >
                         {date ? formatDate(date) : ""}
@@ -186,38 +189,106 @@ const TicketsParDate: React.FC = () => {
                 </div>
             </div>
 
-            {/* STATS */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-                <StatCard
-                    icon={<RiMoneyDollarCircleLine />}
-                    label="Total dépense"
-                    value={`${totalDepense.toFixed(2)} $`}
-                    sub="Somme des mises"
-                />
+            <div className="md:hidden" style={{ background: "#0F172A", borderRadius: 16, padding: 14, border: "1px solid rgba(56,189,248,0.1)", boxShadow: "0 10px 30px rgba(56,189,248,0.2)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                    <div>
+                        <p style={{ color: "#94A3B8", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.5px", margin: 0 }}>Total dépense</p>
+                        <p style={{ color: "#E0F2FE", fontSize: 22, fontWeight: 900, margin: 0 }}>{totalDepense.toFixed(2)} $</p>
+                    </div>
+                    <div style={{ width: 1, height: 36, background: "#1E293B" }} />
+                    <div style={{ textAlign: "center" }}>
+                        <p style={{ color: "#94A3B8", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.5px", margin: 0 }}>Gagné</p>
+                        <p style={{ color: "#34d399", fontSize: 16, fontWeight: 900, margin: 0 }}>{totalGagne.toFixed(2)} $</p>
+                    </div>
+                    <div style={{ width: 1, height: 36, background: "#1E293B" }} />
+                    <div style={{ textAlign: "center" }}>
+                        <p style={{ color: "#94A3B8", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.5px", margin: 0 }}>Profit net</p>
+                        <p style={{ color: profitNet >= 0 ? "#34d399" : "#f87171", fontSize: 16, fontWeight: 900, margin: 0 }}>
+                            {profitNet >= 0 ? "+" : ""}{profitNet.toFixed(2)} $
+                        </p>
+                    </div>
+                </div>
+                <div style={{ marginTop: 10, background: profitNet >= 0 ? "rgba(52,211,153,0.1)" : "rgba(248,113,113,0.1)", border: `1px solid ${profitNet >= 0 ? "rgba(52,211,153,0.2)" : "rgba(248,113,113,0.2)"}`, borderRadius: 8, padding: "5px 10px", display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ color: profitNet >= 0 ? "#34d399" : "#f87171", fontSize: 9, fontWeight: 600 }}>
+                        {profitNet >= 0 ? "Journée positive" : "Journée négative "}
+                    </span>
+                </div>
+            </div>
 
-                <StatCard
-                    icon={<RiTrophyLine />}
-                    label="Total gagné"
-                    value={`${totalGagne.toFixed(2)} $`}
-                    sub="Gains sur cette date"
-                />
+            <div className="hidden md:grid grid-cols-3 gap-4">
+                <StatCard icon={<RiMoneyDollarCircleLine />} label="Total dépense" value={`${totalDepense.toFixed(2)} $`} sub="Somme des mises" />
+                <StatCard icon={<RiTrophyLine />} label="Total gagné" value={`${totalGagne.toFixed(2)} $`} sub="Gains sur cette date" />
+                <StatCard icon={<RiMoneyDollarCircleLine />} label="Profit net" value={`${profitNet >= 0 ? "+" : ""}${profitNet.toFixed(2)} $`} sub={profitNet >= 0 ? "Journée positive" : "Journée négative"} />
+            </div>
 
-                <StatCard
-                    icon={<RiMoneyDollarCircleLine />}
-                    label="Profit net"
-                    value={`${profitNet >= 0 ? "+" : ""}${profitNet.toFixed(2)} $`}
-                    sub={
-                        profitNet >= 0
-                            ? "Journée positive"
-                            : "Journée négative"
-                    }
-                />
 
+            <div className="md:hidden flex flex-col gap-4">
+                {tickets.map((ticket: any, i: number) => {
+                    const st = statutStyle[ticket.statut] ?? statutStyle.en_attente;
+                    return (
+                        <div
+                            key={ticket.id}
+                            style={{
+                                background: "#0F172A",
+                                border: "1px solid rgba(148,163,184,0.10)",
+                                borderRadius: 16,
+                                padding: 12,
+                            }}
+                        >
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                                <span style={{ color: "#60a5fa", fontSize: 11, fontWeight: 800 }}>
+                                    Ticket #{String(i + 1).padStart(2, "0")}
+                                </span>
+                                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                                    <st.Icon style={{ color: st.color, fontSize: 13 }} />
+                                    <span style={{ color: st.color, fontSize: 10, fontWeight: 600 }}>{st.label}</span>
+                                </div>
+                            </div>
+
+                            <p style={{ color: "#475569", fontSize: 8, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 5 }}>Numéros joués</p>
+                            <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 10 }}>
+                                {ticket.numeros_joues?.map((n: number, j: number) => (
+                                    <BallDisplay
+                                        key={j}
+                                        numero={n}
+                                        size="xs"
+                                        categorie={ticket.numeros_gagnants_reels?.includes(n) ? "chaud" : "default"}
+                                    />
+                                ))}
+                            </div>
+
+                            <p style={{ color: "#475569", fontSize: 8, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 5 }}>Numéros gagnants</p>
+                            <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 10 }}>
+                                {ticket.numeros_gagnants_reels?.length ? (
+                                    ticket.numeros_gagnants_reels.map((n: number, j: number) => (
+                                        <BallDisplay
+                                            key={j}
+                                            numero={n}
+                                            size="xs"
+                                            categorie={ticket.numeros_joues?.includes(n) ? "chaud" : "froid"}
+                                        />
+                                    ))
+                                ) : (
+                                    <span style={{ color: "#64748B", fontSize: 11 }}>—</span>
+                                )}
+                            </div>
+
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 8, borderTop: "1px solid #1e293b" }}>
+                                <span style={{ color: "#475569", fontSize: 9 }}>
+                                    {ticket.date_tirage ? formatDate(ticket.date_tirage) : "Tirage en attente"}
+                                </span>
+                                <span style={{ color: Number(ticket.montant_gagne) > 0 ? "#22C55E" : "#64748B", fontSize: 11, fontWeight: 700 }}>
+                                    {Number(ticket.montant_gagne) > 0 ? `+${Number(ticket.montant_gagne).toFixed(2)} $` : "0.00 $"}
+                                </span>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
 
             <div
-                className="rounded-3xl overflow-hidden"
+                className="hidden md:block rounded-3xl overflow-hidden"
                 style={{
                     background: "#fff",
                     border: "1px solid rgba(148,163,184,0.10)",

@@ -56,14 +56,13 @@ const Navbar: React.FC = () => {
         boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
       }}
     >
-      {/* Top Bar */}
       <div
         className=" mx-auto"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "16px 40px",
+          padding: "16px 20px",
           width: "100%",
           boxSizing: "border-box",
           height: "72px",
@@ -108,7 +107,6 @@ const Navbar: React.FC = () => {
           </span>
         </div>
 
-        {/* Desktop Navigation */}
         <div
           className="hidden md:flex"
           style={{
@@ -159,7 +157,6 @@ const Navbar: React.FC = () => {
                 backdropFilter: "blur(10px)",
               })}
             >
-              {/* Hover Glow */}
               <div
                 className="
                   absolute inset-0
@@ -173,7 +170,6 @@ const Navbar: React.FC = () => {
                 }}
               />
 
-              {/* Content */}
               <div className="relative z-10 flex items-center gap-2">
                 <Icon
                   size={18}
@@ -190,7 +186,6 @@ const Navbar: React.FC = () => {
           ))}
         </div>
 
-        {/* Mobile Button */}
         <button
           onClick={() => setOpen(!open)}
           className="
@@ -217,7 +212,6 @@ const Navbar: React.FC = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {open && (
         <div
           className="md:hidden"

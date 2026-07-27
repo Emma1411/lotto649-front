@@ -71,62 +71,43 @@ const Predictions: React.FC = () => {
     <div
       className="flex flex-col gap-10"
       style={{
-        paddingTop: "3rem",
+        paddingTop: "4rem",
       }}
     >
-      {/* HEADER */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-4">
-          <div
-            className="
-              w-14 h-14 rounded-2xl
-              flex items-center justify-center
-            "
-            style={{
-              background:
-                "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
+   <div className="space-y-4">
+  <div className="flex items-center gap-4">
+    <div
+      className="rounded-2xl flex items-center justify-center flex-shrink-0"
+      style={{
+        width: 40,
+        height: 40,
+        background: "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
+        boxShadow: "0 0 30px rgba(59,130,246,0.35)",
+      }}
+    >
+      <RiSparklingLine size={20} color="white" />
+    </div>
 
-              boxShadow:
-                "0 0 30px rgba(59,130,246,0.35)",
-            }}
-          >
-            <RiSparklingLine
-              size={26}
-              color="white"
-            />
-          </div>
+    <div>
+      <h1
+        className="font-black tracking-tight"
+        style={{
+          background: "linear-gradient(135deg,#7DD3FC 0%,#3B82F6 45%,#6366F1 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          fontSize: "clamp(1.7rem, 5vw, 2.25rem)",
+        }}
+      >
+        Prédictions IA
+      </h1>
 
-          <div>
-            <h1
-              className="
-                text-4xl font-black tracking-tight
-              "
-              style={{
-                background:
-                  "linear-gradient(135deg,#7DD3FC 0%,#3B82F6 45%,#6366F1 100%)",
-
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor:
-                  "transparent",
-              }}
-            >
-              Prédictions IA
-            </h1>
-
-            <p
-              className="mt-2"
-              style={{
-                color: "#94A3B8",
-                fontSize: 15,
-              }}
-            >
-              Génération intelligente basée
-              sur le modèle Random Forest &
-              analyse probabiliste avancée.
-            </p>
-          </div>
-        </div>
-      </div>
+      <p className="mt-1" style={{ color: "#94A3B8", fontSize: 14 }}>
+        Génération intelligente basée sur le modèle
+        Random Forest & analyse probabiliste avancée.
+      </p>
+    </div>
+  </div>
+</div>
 
       {/* CONFIG */}
       <div
@@ -786,15 +767,12 @@ const Predictions: React.FC = () => {
           hover:scale-[1.01]
         "
               style={{
-                background:
-                  "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
-
+                background: "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
                 color: "white",
-
-                boxShadow:
-                  "0 0 35px rgba(59,130,246,0.30)",
+                boxShadow: "0 0 35px rgba(59,130,246,0.30)",
                 borderRadius: "4px",
-                padding: "2px"
+                padding: "2px",
+                minHeight: "clamp(48px, 8vw, 56px)",
               }}
             >
               <div

@@ -6,7 +6,7 @@ export const STRATEGIES = [
   { value: "chaud",      label: "Fréquence haute",  description: "Priorité aux numéros les plus sortis" },
   { value: "couverture", label: "Couverture max",   description: "Minimise les doublons entre grilles" },
 ];
-
+console.log("API_URL =", API_URL);
 export const STATUT_CONFIG: Record<string, { label: string; color: string }> = {
   en_attente: { label: "En attente",  color: "text-yellow-400" },
   gagnant:    { label: "Gagnant",     color: "text-green-400"  },

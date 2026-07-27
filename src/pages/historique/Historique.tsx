@@ -71,23 +71,26 @@ const Historique: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5" style={{ paddingTop: "3rem" }}>
+    <div className="flex flex-col gap-5" style={{ paddingTop: "4rem" }}>
 
       <div className="space-y-2">
         <div className="flex items-center gap-3">
           <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center"
+            className="rounded-2xl flex items-center justify-center"
             style={{
+              width: 40,
+              height: 40,
               background: "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
               boxShadow: "0 0 25px rgba(59,130,246,0.35)",
             }}
           >
-            <RiCalendarLine size={22} color="white" />
+            <RiCalendarLine size={20} color="white" />
           </div>
           <div>
             <h1
-              className="text-4xl font-black tracking-tight"
+              className="font-black tracking-tight"
               style={{
+                fontSize: "clamp(1.7rem, 5vw, 2.25rem)",
                 background: "linear-gradient(135deg,#7DD3FC 0%,#3B82F6 45%,#6366F1 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -95,14 +98,13 @@ const Historique: React.FC = () => {
             >
               Historique des tirages
             </h1>
-            <p className="mt-2" style={{ color: "#94A3B8", fontSize: 15 }}>
+            <p className="mt-1" style={{ color: "#94A3B8", fontSize: 14 }}>
               {displayTotal.toLocaleString("fr-CA")} tirages
               {isFiltered ? " trouves dans cet intervalle" : " archives depuis 1982"}
             </p>
           </div>
         </div>
       </div>
-
       <div
         className="rounded-3xl p-6"
         style={{
@@ -300,19 +302,7 @@ const Historique: React.FC = () => {
         </>
       )}
 
-      {/* DATEPICKER DARK STYLE */}
-      <style>{`
-        .react-datepicker { background: #0D1117 !important; border: 1px solid rgba(255,255,255,0.08) !important; border-radius: 12px !important; overflow: hidden !important; font-family: inherit !important; }
-        .react-datepicker__header { background: #111827 !important; border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
-        .react-datepicker__current-month, .react-datepicker__day-name { color: #9CA3AF !important; }
-        .react-datepicker__day { color: #D1D5DB !important; border-radius: 6px !important; }
-        .react-datepicker__day:hover { background: rgba(56,189,248,0.2) !important; color: white !important; }
-        .react-datepicker__day--selected, .react-datepicker__day--in-range { background: #38BDF8 !important; color: #0D1117 !important; }
-        .react-datepicker__day--in-selecting-range { background: rgba(56,189,248,0.3) !important; }
-        .react-datepicker__day--disabled { color: #374151 !important; }
-        .react-datepicker__navigation-icon::before { border-color: #6B7280 !important; }
-        .react-datepicker__year-select, .react-datepicker__month-select { background: #111827 !important; color: #9CA3AF !important; border: 1px solid rgba(255,255,255,0.06) !important; border-radius: 6px !important; }
-      `}</style>
+     
     </div>
   );
 };

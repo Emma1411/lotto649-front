@@ -135,26 +135,27 @@ const TirageDetail: React.FC = () => {
                 Retour à l'historique
             </button>
 
-          
+
             <div className="flex items-center gap-4">
                 <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                    className="rounded-2xl flex items-center justify-center flex-shrink-0"
                     style={{
-                        background:
-                            "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
+                        width: 40,
+                        height: 40,
+                        background: "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
                     }}
                 >
-                    <RiCalendarLine size={26} color="white" />
+                    <RiCalendarLine size={20} color="white" />
                 </div>
 
                 <div>
                     <h1
-                        className="text-4xl font-black"
+                        className="font-black"
                         style={{
-                            background:
-                                "linear-gradient(135deg,#7DD3FC,#38BDF8,#6366F1)",
+                            background: "linear-gradient(135deg,#7DD3FC,#38BDF8,#6366F1)",
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
+                            fontSize: "clamp(1.7rem, 5vw, 2.25rem)",
                         }}
                     >
                         {formatDate(data.date_tirage)}

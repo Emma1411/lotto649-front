@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Navbar } from "../components";
 
 
 const DefaultLayout: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div
       style={{
@@ -127,8 +141,8 @@ const DefaultLayout: React.FC = () => {
           zIndex: 10,
 
           paddingTop: "30px",
-          paddingLeft: "60px",
-          paddingRight: "60px",
+          paddingLeft: isMobile ? "12px" : "60px",
+          paddingRight: isMobile ? "12px" : "60px",
           paddingBottom: "20px",
         }}
       >

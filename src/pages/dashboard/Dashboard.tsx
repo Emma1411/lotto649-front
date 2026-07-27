@@ -157,7 +157,7 @@ const Dashboard: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-6">
         <StatCard
           icon={<RiDatabaseLine />}
           label="Tirages analysés"
