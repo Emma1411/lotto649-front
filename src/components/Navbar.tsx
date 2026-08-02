@@ -32,11 +32,11 @@ const links = [
     label: "Mes tickets",
     Icon: RiTicket2Line,
   },
-  {
-    to: "/backtesting",
-    label: "Backtesting",
-    Icon: RiBarChartBoxLine,
-  },
+  //{
+   // to: "/backtesting",
+  //  label: "Backtesting",
+  //  Icon: RiBarChartBoxLine,
+  //},
 ];
 
 const Navbar: React.FC = () => {

@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
     RiArrowLeftLine,
-    RiTrophyLine,
-    RiGroupLine,
-    RiMoneyDollarCircleLine,
     RiCalendarLine,
 } from "react-icons/ri";
 
@@ -138,7 +135,7 @@ const TirageDetail: React.FC = () => {
 
             <div className="flex items-center gap-4">
                 <div
-                    className="rounded-2xl flex items-center justify-center flex-shrink-0"
+                    className="rounded-2xl flex items-center justify-center"
                     style={{
                         width: 40,
                         height: 40,

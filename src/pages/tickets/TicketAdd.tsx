@@ -133,11 +133,12 @@ const TicketAdd: React.FC = () => {
         </div>
         <div>
           <h1
-            className="text-4xl font-black tracking-tight"
+            className=" font-black tracking-tight"
             style={{
               background: "linear-gradient(135deg,#7DD3FC,#38BDF8,#6366F1)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
+               fontSize: "clamp(1.7rem, 5vw, 2.25rem)",
             }}
           >
             Nouveau ticket
