@@ -74,6 +74,11 @@ const TicketAdd: React.FC = () => {
       return;
     }
 
+    if (!dateTirage) {
+      toast.error("Choisissez une date de tirage");
+      return;
+    }
+
     const invalides = drafts.filter((d) => d.numeros.length !== 6);
     if (invalides.length > 0) {
       toast.error(`${invalides.length} ticket(s) sans 6 numeros`);
@@ -90,7 +95,7 @@ const TicketAdd: React.FC = () => {
             strategie: draft.strategie,
             numeros_joues: draft.numeros,
             cout_ticket: 3.0,
-            date_tirage: dateTirage ? fmt(dateTirage) : undefined,
+            date_tirage: fmt(dateTirage),
           })
         );
       }
@@ -138,7 +143,7 @@ const TicketAdd: React.FC = () => {
               background: "linear-gradient(135deg,#7DD3FC,#38BDF8,#6366F1)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-               fontSize: "clamp(1.7rem, 5vw, 2.25rem)",
+              fontSize: "clamp(1.7rem, 5vw, 2.25rem)",
             }}
           >
             Nouveau ticket
@@ -182,7 +187,7 @@ const TicketAdd: React.FC = () => {
 
         <div>
           <label className="block text-sm mb-3" style={{ color: "#94A3B8" }}>
-            Date du tirage (Mercredi / Samedi)
+            Date du tirage (Mercredi / Samedi) *
           </label>
 
           <div className="flex items-center gap-3 px-4 py-3 rounded-2xl"
@@ -370,15 +375,36 @@ const TicketAdd: React.FC = () => {
 
       <button
         onClick={handleSave}
-        disabled={loading || drafts.some((d) => d.numeros.length !== 6) || !dateAchat}
+        disabled={
+          loading ||
+          drafts.some((d) => d.numeros.length !== 6) ||
+          !dateAchat ||
+          !dateTirage
+        }
         className="flex items-center justify-center gap-3 py-4 rounded-3xl text-base font-semibold transition-all duration-300 hover:scale-[1.01]"
         style={{
-          background: loading || drafts.some((d) => d.numeros.length !== 6) || !dateAchat
-            ? "rgba(56,189,248,0.2)"
-            : "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
+          background:
+            loading ||
+              drafts.some((d) => d.numeros.length !== 6) ||
+              !dateAchat ||
+              !dateTirage
+              ? "rgba(56,189,248,0.2)"
+              : "linear-gradient(135deg,#38BDF8 0%,#2563EB 45%,#6366F1 100%)",
           color: "white",
-          cursor: loading || drafts.some((d) => d.numeros.length !== 6) || !dateAchat ? "not-allowed" : "pointer",
-          opacity: loading || drafts.some((d) => d.numeros.length !== 6) || !dateAchat ? 0.5 : 1,
+          cursor:
+            loading ||
+              drafts.some((d) => d.numeros.length !== 6) ||
+              !dateAchat ||
+              !dateTirage
+              ? "not-allowed"
+              : "pointer",
+          opacity:
+            loading ||
+              drafts.some((d) => d.numeros.length !== 6) ||
+              !dateAchat ||
+              !dateTirage
+              ? 0.5
+              : 1,
           boxShadow: "0 0 30px rgba(59,130,246,0.25)",
           borderRadius: "4px",
           padding: "2px"
